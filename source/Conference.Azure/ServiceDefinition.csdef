@@ -12,6 +12,7 @@
       <InputEndpoint name="Endpoint1" protocol="http" port="8080" />
     </Endpoints>
     <Imports>
+      <Import moduleName="RemoteAccess" />
     </Imports>
     <ConfigurationSettings>
       <Setting name="Diagnostics.ScheduledTransferPeriod" />
@@ -21,6 +22,7 @@
       <Setting name="DbContext.SqlBus" />
       <Setting name="MaintenanceMode" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
+      <Setting name="APPINSIGHTS_INSTRUMENTATIONKEY" />
     </ConfigurationSettings>
   </WebRole>
   <WebRole name="Conference.Web.Public" vmsize="ExtraSmall">
@@ -35,6 +37,7 @@
       <InputEndpoint name="Endpoint1" protocol="http" port="80" />
     </Endpoints>
     <Imports>
+      <Import moduleName="RemoteAccess" />
     </Imports>
     <ConfigurationSettings>
       <Setting name="Diagnostics.ScheduledTransferPeriod" />
@@ -47,6 +50,7 @@
       <Setting name="MaintenanceMode" />
       <Setting name="InstrumentationEnabled" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
+      <Setting name="APPINSIGHTS_INSTRUMENTATIONKEY" />
     </ConfigurationSettings>
     <Startup>
       <Task taskType="simple" executionContext="elevated" commandLine="setup\install.cmd">
@@ -63,6 +67,8 @@
   </WebRole>
   <WorkerRole name="WorkerRoleCommandProcessor" vmsize="ExtraSmall">
     <Imports>
+      <Import moduleName="RemoteAccess" />
+      <Import moduleName="RemoteForwarder" />
     </Imports>
     <ConfigurationSettings>
       <Setting name="Diagnostics.ScheduledTransferPeriod" />
@@ -79,6 +85,7 @@
       <Setting name="DbContext.MessageLog" />
       <Setting name="InstrumentationEnabled" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
+      <Setting name="APPINSIGHTS_INSTRUMENTATIONKEY" />
     </ConfigurationSettings>
     <Startup>
       <Task taskType="simple" executionContext="elevated" commandLine="setup\install.cmd">

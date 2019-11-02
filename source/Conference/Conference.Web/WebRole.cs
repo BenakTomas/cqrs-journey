@@ -22,45 +22,46 @@ namespace Conference.Web.Admin
     {
         public override bool OnStart()
         {
-            var config = DiagnosticMonitor.GetDefaultInitialConfiguration();
+	        // TODO make sure the config below is set in Configuration -> Diagnostics for this web role
+			//var config = DiagnosticMonitor.GetDefaultInitialConfiguration();
 
-            var cloudStorageAccount =
-                CloudStorageAccount.Parse(RoleEnvironment.GetConfigurationSettingValue("Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString"));
+			//var cloudStorageAccount =
+			//    CloudStorageAccount.Parse(RoleEnvironment.GetConfigurationSettingValue("Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString"));
 
-            TimeSpan transferPeriod;
-            if (!TimeSpan.TryParse(RoleEnvironment.GetConfigurationSettingValue("Diagnostics.ScheduledTransferPeriod"), out transferPeriod))
-            {
-                transferPeriod = TimeSpan.FromMinutes(1);
-            }
+			//TimeSpan transferPeriod;
+			//if (!TimeSpan.TryParse(RoleEnvironment.GetConfigurationSettingValue("Diagnostics.ScheduledTransferPeriod"), out transferPeriod))
+			//{
+			//    transferPeriod = TimeSpan.FromMinutes(1);
+			//}
 
-            TimeSpan sampleRate;
-            if (!TimeSpan.TryParse(RoleEnvironment.GetConfigurationSettingValue("Diagnostics.PerformanceCounterSampleRate"), out sampleRate))
-            {
-                sampleRate = TimeSpan.FromSeconds(30);
-            }
+			//TimeSpan sampleRate;
+			//if (!TimeSpan.TryParse(RoleEnvironment.GetConfigurationSettingValue("Diagnostics.PerformanceCounterSampleRate"), out sampleRate))
+			//{
+			//    sampleRate = TimeSpan.FromSeconds(30);
+			//}
 
-            LogLevel logLevel;
-            if (!Enum.TryParse<LogLevel>(RoleEnvironment.GetConfigurationSettingValue("Diagnostics.LogLevelFilter"), out logLevel))
-            {
-                logLevel = LogLevel.Verbose;
-            }
+			//LogLevel logLevel;
+			//if (!Enum.TryParse<LogLevel>(RoleEnvironment.GetConfigurationSettingValue("Diagnostics.LogLevelFilter"), out logLevel))
+			//{
+			//    logLevel = LogLevel.Verbose;
+			//}
 
-            // Setup performance counters
-            config.PerformanceCounters.DataSources.Add(
-                new PerformanceCounterConfiguration
-                {
-                    CounterSpecifier = @"\Processor(_Total)\% Processor Time",
-                    SampleRate = sampleRate
-                });
-            config.PerformanceCounters.ScheduledTransferPeriod = transferPeriod;
+			//// Setup performance counters
+			//config.PerformanceCounters.DataSources.Add(
+			//    new PerformanceCounterConfiguration
+			//    {
+			//        CounterSpecifier = @"\Processor(_Total)\% Processor Time",
+			//        SampleRate = sampleRate
+			//    });
+			//config.PerformanceCounters.ScheduledTransferPeriod = transferPeriod;
 
-            // Setup logs
-            config.Logs.ScheduledTransferPeriod = transferPeriod;
-            config.Logs.ScheduledTransferLogLevelFilter = logLevel;
+			//// Setup logs
+			//config.Logs.ScheduledTransferPeriod = transferPeriod;
+			//config.Logs.ScheduledTransferLogLevelFilter = logLevel;
 
-            DiagnosticMonitor.Start(cloudStorageAccount, config);
+			//DiagnosticMonitor.Start(cloudStorageAccount, config);
 
-            return base.OnStart();
+			return base.OnStart();
         }
     }
 }

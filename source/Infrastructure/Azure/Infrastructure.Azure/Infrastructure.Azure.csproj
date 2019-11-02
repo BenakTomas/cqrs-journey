@@ -160,10 +160,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Settings.Template.xml">
-      <Link>Settings.Template.xml</Link>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="..\Settings.xml">
+      <Link>Settings.xml</Link>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

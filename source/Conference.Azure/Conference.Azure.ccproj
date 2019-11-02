@@ -10,9 +10,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Conference.Azure</RootNamespace>
     <AssemblyName>Conference.Azure</AssemblyName>
-    <StartDevelopmentStorage>True</StartDevelopmentStorage>
+    <StartDevelopmentStorage>False</StartDevelopmentStorage>
     <Name>Conference.Azure</Name>
     <UseEmulatorExpressByDefault>False</UseEmulatorExpressByDefault>
+    <UseWebProjectPorts>False</UseWebProjectPorts>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -62,6 +63,20 @@
       <RoleName>WorkerRoleCommandProcessor</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Conference.Web.AdminContent\" />
+    <Folder Include="Conference.Web.PublicContent\" />
+    <Folder Include="Profiles" />
+    <Folder Include="WorkerRoleCommandProcessorContent\" />
+  </ItemGroup>
+  <ItemGroup>
+    <DiagnosticsConfiguration Include="Conference.Web.AdminContent\diagnostics.wadcfgx" />
+    <DiagnosticsConfiguration Include="Conference.Web.PublicContent\diagnostics.wadcfgx" />
+    <DiagnosticsConfiguration Include="WorkerRoleCommandProcessorContent\diagnostics.wadcfgx" />
+  </ItemGroup>
+  <ItemGroup>
+    <PublishProfile Include="Profiles\conference-managementStaging.azurePubxml" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>

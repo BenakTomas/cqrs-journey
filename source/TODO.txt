@@ -1,0 +1,6 @@
+Configure Windows Azure Diagnostics in XML (the new way) after the upgrade to Azure Tools (and SDK) 2.9
+- could not link diagnostic config with a storage account
+- how to install app-specific performance counters on a machine in cloud?
+Add missing references - EF, MonAgentListener (?)
+Supply Azure Credentials to Infrastructure.Azure (Settings.xml) and some other project
+Upgrade ASP.NET MVC (or download the old ones?)

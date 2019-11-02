@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AzureCredentials>{"ServiceManagementEndpoint":"https:\/\/management.core.windows.net\/","ResourceManagementEndpoint":"https:\/\/management.azure.com\/","SubscriptionId":"5a1618c5-b0b6-430a-a174-09313fd9d515"}</AzureCredentials>
+    <AzureDeleteDeploymentOnFailure>False</AzureDeleteDeploymentOnFailure>
+    <AzureDeploymentLabel>Conference.Azure</AzureDeploymentLabel>
+    <AzureDeploymentReplacementMethod>AutomaticUpgrade</AzureDeploymentReplacementMethod>
+    <AzureSlot>Staging</AzureSlot>
+    <AzureEnableRemoteDesktop>True</AzureEnableRemoteDesktop>
+    <AzureEnableWebDeploy>False</AzureEnableWebDeploy>
+    <AzureFallbackToDeleteAndRecreateIfUpgradeFails>False</AzureFallbackToDeleteAndRecreateIfUpgradeFails>
+    <AzureHostedServiceLabel>conference-management</AzureHostedServiceLabel>
+    <AzureHostedServiceName>conference-management</AzureHostedServiceName>
+    <AzureHostedServiceResourceGroup>conference-management</AzureHostedServiceResourceGroup>
+    <AzureEnableIntelliTrace>False</AzureEnableIntelliTrace>
+    <AzureEnableProfiling>False</AzureEnableProfiling>
+    <AzureServiceConfiguration>Cloud</AzureServiceConfiguration>
+    <AzureSolutionConfiguration>Release</AzureSolutionConfiguration>
+    <AzureStorageAccountLabel>confmgmt</AzureStorageAccountLabel>
+    <AzureStorageAccountName>confmgmt</AzureStorageAccountName>
+    <AzureAppendTimestampToDeploymentLabel>True</AzureAppendTimestampToDeploymentLabel>
+    <EnableRemoteDebugger>False</EnableRemoteDebugger>
+    <RemoteDebuggerConnectorCertificateThumbprint>B7CD3B4436DCA68B2ECFB182280B75244A1E5FFE</RemoteDebuggerConnectorCertificateThumbprint>
+    <EnableApplicationInsights>True</EnableApplicationInsights>
+  </PropertyGroup>
+</Project>

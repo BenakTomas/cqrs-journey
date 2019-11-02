@@ -96,87 +96,90 @@ namespace WorkerRoleCommandProcessor
                 };
             MaintenanceMode.RefreshIsInMaintainanceMode();
 
-            var config = DiagnosticMonitor.GetDefaultInitialConfiguration();
+			// TODO ensure performance counters listed below are configured for this worker role in XML
+			// TODO enable writing traces from DiagnosticsMonitor and with XML config 
+			// The config here needs to be migrated to XML
+//            var config = DiagnosticMonitor.GetDefaultInitialConfiguration();
 
-            var cloudStorageAccount =
-                CloudStorageAccount.Parse(RoleEnvironment.GetConfigurationSettingValue("Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString"));
+//            var cloudStorageAccount =
+//                CloudStorageAccount.Parse(RoleEnvironment.GetConfigurationSettingValue("Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString"));
 
-            TimeSpan transferPeriod;
-            if (!TimeSpan.TryParse(RoleEnvironment.GetConfigurationSettingValue("Diagnostics.ScheduledTransferPeriod"), out transferPeriod))
-            {
-                transferPeriod = TimeSpan.FromMinutes(1);
-            }
+//            TimeSpan transferPeriod;
+//            if (!TimeSpan.TryParse(RoleEnvironment.GetConfigurationSettingValue("Diagnostics.ScheduledTransferPeriod"), out transferPeriod))
+//            {
+//                transferPeriod = TimeSpan.FromMinutes(1);
+//            }
 
-            TimeSpan sampleRate;
-            if (!TimeSpan.TryParse(RoleEnvironment.GetConfigurationSettingValue("Diagnostics.PerformanceCounterSampleRate"), out sampleRate))
-            {
-                sampleRate = TimeSpan.FromSeconds(30);
-            }
+//            TimeSpan sampleRate;
+//            if (!TimeSpan.TryParse(RoleEnvironment.GetConfigurationSettingValue("Diagnostics.PerformanceCounterSampleRate"), out sampleRate))
+//            {
+//                sampleRate = TimeSpan.FromSeconds(30);
+//            }
 
-            LogLevel logLevel;
-            if (!Enum.TryParse<LogLevel>(RoleEnvironment.GetConfigurationSettingValue("Diagnostics.LogLevelFilter"), out logLevel))
-            {
-                logLevel = LogLevel.Verbose;
-            }
+//            LogLevel logLevel;
+//            if (!Enum.TryParse<LogLevel>(RoleEnvironment.GetConfigurationSettingValue("Diagnostics.LogLevelFilter"), out logLevel))
+//            {
+//                logLevel = LogLevel.Verbose;
+//            }
 
-            // Setup performance counters
-            config.PerformanceCounters.DataSources.Add(
-                new PerformanceCounterConfiguration
-                {
-                    CounterSpecifier = @"\Processor(_Total)\% Processor Time",
-                    SampleRate = sampleRate
-                });
+//            // Setup performance counters
+//            config.PerformanceCounters.DataSources.Add(
+//                new PerformanceCounterConfiguration
+//                {
+//                    CounterSpecifier = @"\Processor(_Total)\% Processor Time",
+//                    SampleRate = sampleRate
+//                });
 
-#if !LOCAL
-            foreach (var counterName in
-                new[] 
-                { 
-                    Infrastructure.Azure.Instrumentation.SessionSubscriptionReceiverInstrumentation.TotalSessionsCounterName,
-                    Infrastructure.Azure.Instrumentation.SessionSubscriptionReceiverInstrumentation.CurrentSessionsCounterName,
-                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.TotalMessagesCounterName,
-                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.TotalMessagesSuccessfullyProcessedCounterName,
-                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.TotalMessagesUnsuccessfullyProcessedCounterName,
-                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.TotalMessagesCompletedCounterName,
-                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.TotalMessagesNotCompletedCounterName,                
-                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.MessagesReceivedPerSecondCounterName,
-                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.AverageMessageProcessingTimeCounterName,
-                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.CurrentMessagesInProcessCounterName,
-                })
-            {
-                config.PerformanceCounters.DataSources.Add(
-                    new PerformanceCounterConfiguration
-                    {
-                        CounterSpecifier = @"\" + Infrastructure.Azure.Instrumentation.Constants.ReceiversPerformanceCountersCategory + @"(*)\" + counterName,
-                        SampleRate = sampleRate
-                    });
-            }
+//#if !LOCAL
+//            foreach (var counterName in
+//                new[] 
+//                { 
+//                    Infrastructure.Azure.Instrumentation.SessionSubscriptionReceiverInstrumentation.TotalSessionsCounterName,
+//                    Infrastructure.Azure.Instrumentation.SessionSubscriptionReceiverInstrumentation.CurrentSessionsCounterName,
+//                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.TotalMessagesCounterName,
+//                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.TotalMessagesSuccessfullyProcessedCounterName,
+//                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.TotalMessagesUnsuccessfullyProcessedCounterName,
+//                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.TotalMessagesCompletedCounterName,
+//                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.TotalMessagesNotCompletedCounterName,                
+//                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.MessagesReceivedPerSecondCounterName,
+//                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.AverageMessageProcessingTimeCounterName,
+//                    Infrastructure.Azure.Instrumentation.SubscriptionReceiverInstrumentation.CurrentMessagesInProcessCounterName,
+//                })
+//            {
+//                config.PerformanceCounters.DataSources.Add(
+//                    new PerformanceCounterConfiguration
+//                    {
+//                        CounterSpecifier = @"\" + Infrastructure.Azure.Instrumentation.Constants.ReceiversPerformanceCountersCategory + @"(*)\" + counterName,
+//                        SampleRate = sampleRate
+//                    });
+//            }
 
-            foreach (var counterName in
-                new[] 
-                { 
-                    Infrastructure.Azure.Instrumentation.EventStoreBusPublisherInstrumentation.CurrentEventPublishersCounterName,
-                    Infrastructure.Azure.Instrumentation.EventStoreBusPublisherInstrumentation.EventPublishingRequestsPerSecondCounterName,
-                    Infrastructure.Azure.Instrumentation.EventStoreBusPublisherInstrumentation.EventsPublishedPerSecondCounterName,
-                    Infrastructure.Azure.Instrumentation.EventStoreBusPublisherInstrumentation.TotalEventsPublishedCounterName,
-                    Infrastructure.Azure.Instrumentation.EventStoreBusPublisherInstrumentation.TotalEventsPublishingRequestsCounterName,
-                })
-            {
-                config.PerformanceCounters.DataSources.Add(
-                    new PerformanceCounterConfiguration
-                    {
-                        CounterSpecifier = @"\" + Infrastructure.Azure.Instrumentation.Constants.EventPublishersPerformanceCountersCategory + @"(*)\" + counterName,
-                        SampleRate = sampleRate
-                    });
-            }
-#endif
+//            foreach (var counterName in
+//                new[] 
+//                { 
+//                    Infrastructure.Azure.Instrumentation.EventStoreBusPublisherInstrumentation.CurrentEventPublishersCounterName,
+//                    Infrastructure.Azure.Instrumentation.EventStoreBusPublisherInstrumentation.EventPublishingRequestsPerSecondCounterName,
+//                    Infrastructure.Azure.Instrumentation.EventStoreBusPublisherInstrumentation.EventsPublishedPerSecondCounterName,
+//                    Infrastructure.Azure.Instrumentation.EventStoreBusPublisherInstrumentation.TotalEventsPublishedCounterName,
+//                    Infrastructure.Azure.Instrumentation.EventStoreBusPublisherInstrumentation.TotalEventsPublishingRequestsCounterName,
+//                })
+//            {
+//                config.PerformanceCounters.DataSources.Add(
+//                    new PerformanceCounterConfiguration
+//                    {
+//                        CounterSpecifier = @"\" + Infrastructure.Azure.Instrumentation.Constants.EventPublishersPerformanceCountersCategory + @"(*)\" + counterName,
+//                        SampleRate = sampleRate
+//                    });
+//            }
+//#endif
 
-            config.PerformanceCounters.ScheduledTransferPeriod = transferPeriod;
+//            config.PerformanceCounters.ScheduledTransferPeriod = transferPeriod;
 
-            // Setup logs
-            config.Logs.ScheduledTransferPeriod = transferPeriod;
-            config.Logs.ScheduledTransferLogLevelFilter = logLevel;
+//            // Setup logs
+//            config.Logs.ScheduledTransferPeriod = transferPeriod;
+//            config.Logs.ScheduledTransferLogLevelFilter = logLevel;
 
-            DiagnosticMonitor.Start(cloudStorageAccount, config);
+//            DiagnosticMonitor.Start(cloudStorageAccount, config);
 
             Trace.Listeners.Add(new Microsoft.WindowsAzure.Diagnostics.DiagnosticMonitorTraceListener());
             Trace.AutoFlush = true;
